@@ -1,0 +1,15 @@
+all:
+	gcc -o main main.c chiffrage.c
+
+main: main.o chiffrage.o
+	gcc -o main main.o chiffrage.o
+
+main.o: main.c chiffrage.h chiffrage.h
+	gcc -c main.c
+
+chiffrage.o: chiffrage.c chiffrage.h
+	gcc -c chiffrage.c
+
+clean:
+	rm main.o chiffrage.o
+	rm main
