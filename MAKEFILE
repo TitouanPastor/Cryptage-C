@@ -1,15 +1,14 @@
-all:
-	gcc -o main main.c chiffrage.c
+CC = gcc
+CFLAGS = -g
+SOURCES = $(wildcard *.c)
+BINAIRES = $(patsubst %.c,%.o,${SOURCES})
 
-main: main.o chiffrage.o
-	gcc -o main main.o chiffrage.o
+all : ${BINAIRES}
+	${CC} ${CFLAGS} -o main $^
 
-main.o: main.c chiffrage.h chiffrage.h
-	gcc -c main.c
+main.o : chiffrage.h
 
-chiffrage.o: chiffrage.c chiffrage.h
-	gcc -c chiffrage.c
+chiffrage.o : chiffrage.h
 
-clean:
-	rm main.o chiffrage.o
-	rm main
+clean :
+	rm -f *.o

@@ -1,10 +1,35 @@
+/******************************************************************************
+*  ASR => 4R2.04                                                              *
+*******************************************************************************
+*                                                                             *
+*  N° de Sujet : 3                                                            *
+*                                                                             *
+*******************************************************************************
+*                                                                             *
+*  Intitulé : Chiffrement de messages                                         *
+*                                                                             *
+*******************************************************************************
+*                                                                             *
+*  Nom-prénom1 : Pastor Titouan                                               *
+*                                                                             *
+*  Nom-prénom2 : Ducournau Gaia                                               *
+*                                                                             *
+*  Nom-prénom3 : Bezara Jonathan                                              *
+*                                                                             *
+*  Nom-prénom4 : Sechi Chloé                                                  *
+*                                                                             *
+*******************************************************************************
+*                                                                             *
+*  Nom du fichier : chiffrage.c                                               *
+*                                                                             *
+******************************************************************************/
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "chiffrage.h"
 
 bool verifierAlphanum(char* texte) {
@@ -18,7 +43,6 @@ bool verifierAlphanum(char* texte) {
         if (!isalnum(courant)) {
             isCorrect = false;
         }
-        //printf("%c : %i \n", courant, isCorrect); // debug
     }
     return isCorrect;
 }
@@ -34,14 +58,12 @@ char* convertirAccent(char* texte) {
     for( int i=0; i < strlen(texte); i++ ) {
 
         courant = *(texte+i);
-        printf("Char %c : %i\n",courant, courant); //debug
 
         switch (courant) {
             case 169 : //e
             case 168 : 
             case 170 : 
             case 171 : 
-                printf("'e' accentué trouvé à la place %i du texte\n", i);
                 *(texteConversion+i) = 'e';
                 break;
 
@@ -49,7 +71,6 @@ char* convertirAccent(char* texte) {
             case 137 :
             case 138 :
             case 139 :
-                printf("'E' accentué trouvé à la place %i du texte\n", i);
                 *(texteConversion+i) = 'E';
                 break;
 
@@ -58,7 +79,6 @@ char* convertirAccent(char* texte) {
             case 162 :
             case 163 :
             case 164 :
-                printf("'a' accentué trouvé à la place %i du texte\n", i);
                 *(texteConversion+i) = 'a';
                 break;
 
@@ -67,7 +87,6 @@ char* convertirAccent(char* texte) {
             case 130 :
             case 131 :
             case 132 :
-                printf("'A' accentué trouvé à la place %i du texte\n", i);
                 *(texteConversion+i) = 'A';
                 break;
 
@@ -75,7 +94,6 @@ char* convertirAccent(char* texte) {
             case 173 :
             case 174 :
             case 175 :
-                printf("'i' accentué trouvé à la place %i du texte\n", i);
                 *(texteConversion+i) = 'i';
                 break;
 
@@ -84,7 +102,6 @@ char* convertirAccent(char* texte) {
             case 180 :
             case 181 :
             case 182 :
-                printf("'o' accentué trouvé à la place %i du texte\n", i);
                 *(texteConversion+i) = 'o';
                 break;
 
@@ -92,7 +109,6 @@ char* convertirAccent(char* texte) {
             case 186 :
             case 187 :
             case 188 :
-                printf("'u' accentué trouvé à la place %i du texte\n", i);
                 *(texteConversion+i) = 'u';
                 break;
 
@@ -194,8 +210,6 @@ char* chiffrerVigenere(char* texte, char* cle) {
         c = (*(texte+i) - 'a') + intDecalage;
         c = c % 26;
         *(texteOut+i) = c + 'a';
-        //printf("index : %d texte : %c decalage : %d texteOut : %c\n",i, *(texte+i), intDecalage, *(texteOut+i)); //debug
-
     }
 
     return texteOut;
@@ -215,10 +229,132 @@ char* dechiffrerVigenere(char* texte, char* cle) {
         c = (*(texte+i) - 'a') + (26 - intDecalage);
         c = c % 26;
         *(texteOut+i) = c + 'a';
-        //printf("index : %d texte : %c decalage : %d texteOut : %c\n",i, *(texte+i), intDecalage, *(texteOut+i)); //debug
-
     }
 
     return texteOut;
+
+}
+
+void afficherMenu() {
+
+    int choix = 0;
+    printf("\n\n- ################### - Menu principal - ################### -\n\n");
+    printf("1 - Chiffrer un texte avec l'algorithme de César\n");
+    printf("2 - Déchiffrer un texte avec l'algorithme de César\n");
+    printf("3 - Chiffrer un texte avec l'algorithme de Vigenère\n");
+    printf("4 - Déchiffrer un texte avec l'algorithme de Vigenère\n");
+    printf("5 - Vérifier si un texte est alphanumérique\n");
+    printf("0 - Quitter l'application\n");
+
+    printf("Sélectionnez votre option : ");
+    scanf("%d", &choix);
+
+     switch (choix) {
+
+        case 1: {
+
+            char *texte;
+            texte = malloc(256); //256 caractères max ici (on peut changer)
+            printf("Entrez votre texte à chiffrer avec César : ");
+            scanf("%s", texte);
+            if (!verifierAlphanum(texte)) {
+                printf("Votre texte n'est pas alphanumérique !! CONVERSION DES ACCENTS !!\n");
+                texte = convertirAccent(texte);
+                printf("Maintenant on le chiffre avec l'algorithme de César !\n");
+            }
+
+            printf("Entrez la clé pour chiffrer en césar : ");
+            int input_cle;
+            scanf("%d", &input_cle);
+            printf("Texte chiffré en césar (clé = %d) %s = %s\n",input_cle, texte, chiffrerCesar(texte, input_cle));
+            free(texte);
+            afficherMenu();
+            break;
+        }
+
+        case 2: {
+
+            char* texte;
+            texte = malloc(256);
+            printf("Entrez un texte à déchiffrer avec l'algorithme de césar : \n");
+            scanf("%s", texte);
+            
+            printf("Entrez sa clé de déchiffrement :");
+            int input_cle;
+            scanf("%d", &input_cle);
+            printf("Texte %s déchiffré en césar (clé = %d) : %s\n",texte, input_cle ,dechiffrerCesar(texte, input_cle));
+            free(texte);
+            afficherMenu();
+            break;
+        }
+
+        case 3: {
+
+            char *texte;
+            texte = malloc(256);
+            printf("Entrez votre texte à chiffrer avec Vigenère : ");
+            scanf("%s", texte);
+            if (!verifierAlphanum(texte)) {
+                printf("Votre texte n'est pas alphanumérique !! CONVERSION DES ACCENTS !!\n");
+                texte = convertirAccent(texte);
+                printf("Maintenant on le chiffre avec l'algorithme de Vigenère !\n");
+            }
+
+            printf("lalala\n");
+            printf("Entrez la clé pour chiffrer en Vigenère (chaine de caractère) : ");
+            char *input_cleV;
+            input_cleV = malloc(256);
+            scanf("%s", input_cleV);
+            printf("Texte chiffré en Vigenere (clé = %s) %s = %s\n",input_cleV, texte, chiffrerVigenere(texte, input_cleV));
+            free(texte);
+            free(input_cleV);
+            afficherMenu();
+            break;
+
+        }
+
+        case 4: {
+
+            char* texte;
+            texte = malloc(256);
+            printf("Entrez un texte à déchiffrer avec l'algorithme de Vigenere : \n");
+            scanf("%s", texte);
+            char *input_cleV;
+            input_cleV = malloc(256);
+            printf("Entrez sa clé de déchiffrement :");
+            scanf("%s", input_cleV);
+            printf("Texte %s déchiffré en Vigenere (clé = %s) : %s\n",texte, input_cleV ,dechiffrerVigenere(texte, input_cleV));
+            free(texte);
+            free(input_cleV);
+            afficherMenu();
+            break;
+
+        }
+            
+        case 5: {
+
+            char *texte;
+            texte = malloc(256);
+            printf("entrer un texte pour vérifier si il est alphanumérique ou non : ");
+            scanf("%s", texte);
+            if (verifierAlphanum(texte)) {
+                printf("Votre texte est bien alphanumérique.\n");
+            } else {
+                printf("Votre texte n'est pas alphanumérique !!\n");
+                printf("\n###############################################################################\n\n");
+            }
+            afficherMenu();
+            break;
+
+        }
+            
+        case 0:
+            break;
+        default:
+            printf("Chiffre incorrect, recommencez s-il vous plaît.\n");
+            afficherMenu();
+            break;
+
+     }
 
 }
