@@ -1,5 +1,7 @@
 # Projet de chiffrage en language C
 
+lien git du projet : https://gitlab.info.iut-tlse3.fr/pst4279a/chiffrage-projet-c-s2
+
 Ce projet à pour but de développer une application capable de **chiffrer** et **déchiffrer** un texte écrit par l'utilisateur à l'aide du chiffrage de **César** et de celui de **Vigenère**.
 
 ## Sommaire
