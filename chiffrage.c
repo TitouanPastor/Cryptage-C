@@ -47,10 +47,7 @@ bool verifierAlphanum(char* texte) {
     return isCorrect;
 }
 
-
 char* convertirAccent(char* texte) {
-
-
 
     char* texteConversion;
     texteConversion = malloc(sizeof(char) * strlen(texte) +1);
@@ -238,12 +235,17 @@ char* dechiffrerVigenere(char* texte, char* cle) {
 void afficherMenu() {
 
     int choix = 0;
+    char *texte;
+    char *texteOut;
+    texte = malloc(256);
+    texteOut = malloc(256);
     printf("\n\n- ################### - Menu principal - ################### -\n\n");
     printf("1 - Chiffrer un texte avec l'algorithme de César\n");
     printf("2 - Déchiffrer un texte avec l'algorithme de César\n");
     printf("3 - Chiffrer un texte avec l'algorithme de Vigenère\n");
     printf("4 - Déchiffrer un texte avec l'algorithme de Vigenère\n");
     printf("5 - Vérifier si un texte est alphanumérique\n");
+    printf("6 - Nettoyer le fichier log\n");
     printf("0 - Quitter l'application\n");
 
     printf("Sélectionnez votre option : ");
@@ -253,8 +255,7 @@ void afficherMenu() {
 
         case 1: {
 
-            char *texte;
-            texte = malloc(256); //256 caractères max ici (on peut changer)
+            FILE* file  = fopen("Chiffrage.txt", "a");
             printf("Entrez votre texte à chiffrer avec César : ");
             scanf("%s", texte);
             if (!verifierAlphanum(texte)) {
@@ -266,32 +267,50 @@ void afficherMenu() {
             printf("Entrez la clé pour chiffrer en césar : ");
             int input_cle;
             scanf("%d", &input_cle);
-            printf("Texte chiffré en césar (clé = %d) %s = %s\n",input_cle, texte, chiffrerCesar(texte, input_cle));
+            texteOut = chiffrerCesar(texte, input_cle);
+            printf("Texte chiffré en césar (clé = %d) %s = %s\n",input_cle, texte, texteOut);
+
+            fprintf(file,"\n/================/ Chiffrage César /================/\n\n");
+            fprintf(file, "Texte initial : %s\n", texte);
+            fprintf(file, "Chiffrage avec la clé : %i\n", input_cle);
+            fprintf(file, "Texte chiffré : %s\n", texteOut);
+            fprintf(file,"\n/===================================================/\n\n");
+            fclose(file);
+
             free(texte);
+            free(texteOut);
             afficherMenu();
             break;
         }
 
         case 2: {
 
-            char* texte;
-            texte = malloc(256);
+            FILE* file  = fopen("Chiffrage.txt", "a");
             printf("Entrez un texte à déchiffrer avec l'algorithme de césar : \n");
             scanf("%s", texte);
             
             printf("Entrez sa clé de déchiffrement :");
             int input_cle;
             scanf("%d", &input_cle);
-            printf("Texte %s déchiffré en césar (clé = %d) : %s\n",texte, input_cle ,dechiffrerCesar(texte, input_cle));
+            texteOut = dechiffrerCesar(texte, input_cle);
+            printf("Texte %s déchiffré en césar (clé = %d) : %s\n",texte, input_cle , texteOut);
+
+            fprintf(file,"\n/===============/ Déchiffrage César /===============/\n\n");
+            fprintf(file, "Texte initial chiffré : %s\n", texte);
+            fprintf(file, "Déchiffrage avec la clé : %i\n", input_cle);
+            fprintf(file, "Texte déchiffré : %s\n", texteOut);
+            fprintf(file,"\n/===================================================/\n\n");
+            fclose(file);
+
             free(texte);
+            free(texteOut);
             afficherMenu();
             break;
         }
 
         case 3: {
 
-            char *texte;
-            texte = malloc(256);
+            FILE* file  = fopen("Chiffrage.txt", "a");
             printf("Entrez votre texte à chiffrer avec Vigenère : ");
             scanf("%s", texte);
             if (!verifierAlphanum(texte)) {
@@ -299,13 +318,20 @@ void afficherMenu() {
                 texte = convertirAccent(texte);
                 printf("Maintenant on le chiffre avec l'algorithme de Vigenère !\n");
             }
-
-            printf("lalala\n");
             printf("Entrez la clé pour chiffrer en Vigenère (chaine de caractère) : ");
             char *input_cleV;
             input_cleV = malloc(256);
             scanf("%s", input_cleV);
-            printf("Texte chiffré en Vigenere (clé = %s) %s = %s\n",input_cleV, texte, chiffrerVigenere(texte, input_cleV));
+            texteOut = chiffrerVigenere(texte, input_cleV);
+            printf("Texte chiffré en Vigenere (clé = %s) %s = %s\n",input_cleV, texte, texteOut);
+
+            fprintf(file,"\n/==============/ Chiffrage Vigenère /===============/\n\n");
+            fprintf(file, "Texte initial : %s\n", texte);
+            fprintf(file, "Chiffrage avec la clé : %s\n", input_cleV);
+            fprintf(file, "Texte chiffré : %s\n", texteOut);
+            fprintf(file,"\n/===================================================/\n\n");
+            fclose(file);
+
             free(texte);
             free(input_cleV);
             afficherMenu();
@@ -315,15 +341,23 @@ void afficherMenu() {
 
         case 4: {
 
-            char* texte;
-            texte = malloc(256);
+            FILE* file  = fopen("Chiffrage.txt", "a");
             printf("Entrez un texte à déchiffrer avec l'algorithme de Vigenere : \n");
             scanf("%s", texte);
             char *input_cleV;
             input_cleV = malloc(256);
             printf("Entrez sa clé de déchiffrement :");
             scanf("%s", input_cleV);
-            printf("Texte %s déchiffré en Vigenere (clé = %s) : %s\n",texte, input_cleV ,dechiffrerVigenere(texte, input_cleV));
+            texteOut = dechiffrerVigenere(texte, input_cleV);
+            printf("Texte %s déchiffré en Vigenere (clé = %s) : %s\n",texte, input_cleV ,texteOut);
+
+            fprintf(file,"\n/=============/ Déchiffrage Vigenère /==============/\n\n");
+            fprintf(file, "Texte initial chiffré : %s\n", texte);
+            fprintf(file, "Déchiffrage avec la clé : %s\n", input_cleV);
+            fprintf(file, "Texte déchiffré : %s\n", texteOut);
+            fprintf(file,"\n/===================================================/\n\n");
+            fclose(file);
+
             free(texte);
             free(input_cleV);
             afficherMenu();
@@ -333,21 +367,38 @@ void afficherMenu() {
             
         case 5: {
 
-            char *texte;
-            texte = malloc(256);
+            FILE* file  = fopen("Chiffrage.txt", "a");
             printf("entrer un texte pour vérifier si il est alphanumérique ou non : ");
             scanf("%s", texte);
+
+            fprintf(file,"\n/==========/ Vérification alphanumérique /==========/\n\n");
+            fprintf(file, "Texte à vérifier : %s\n", texte);
+
             if (verifierAlphanum(texte)) {
+                fprintf(file, "Texte alphanumérique\n");
                 printf("Votre texte est bien alphanumérique.\n");
             } else {
+                fprintf(file, "Texte non alphanumérique\n");
                 printf("Votre texte n'est pas alphanumérique !!\n");
-                printf("\n###############################################################################\n\n");
             }
+            fprintf(file,"\n/===================================================/\n\n");
+
+            fclose(file);
             afficherMenu();
             break;
 
         }
+
+        case 6: {
+            FILE* file  = fopen("Chiffrage.txt", "a");
+            file=freopen(NULL,"w",file);
+            fclose(file);
+            printf("\nNettoyage effectué\n");
+            afficherMenu();
+            break;
+        }
             
+
         case 0:
             break;
         default:
