@@ -33,8 +33,6 @@
 #include "chiffrage.h"
 
 bool verifierAlphanum(char* texte) {
-    
-    printf("\nChaîne à vérifier : %s\n\n", texte);
 
     bool isCorrect = true;
     char courant;
@@ -240,6 +238,7 @@ void afficherMenu() {
     texte = malloc(256);
     texteOut = malloc(256);
     printf("\n\n- ################### - Menu principal - ################### -\n\n");
+    printf("----Lire le Read.Me pour plus d'informations sur les programmes----\n\n");
     printf("1 - Chiffrer un texte avec l'algorithme de César\n");
     printf("2 - Déchiffrer un texte avec l'algorithme de César\n");
     printf("3 - Chiffrer un texte avec l'algorithme de Vigenère\n");
