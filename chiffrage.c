@@ -244,8 +244,8 @@ void afficherMenu() {
     printf("3 - Chiffrer un texte avec l'algorithme de Vigenère\n");
     printf("4 - Déchiffrer un texte avec l'algorithme de Vigenère\n");
     printf("5 - Vérifier si un texte est alphanumérique\n");
-    printf("6 - Nettoyer le fichier log\n");
-    printf("0 - Quitter l'application\n");
+    printf("6 - Nettoyer le fichier log(chiffrage.txt)\n");
+    printf("0 - Quitter l'application\n\n");
 
     printf("Sélectionnez votre option : ");
     scanf("%d", &choix);
@@ -255,10 +255,10 @@ void afficherMenu() {
         case 1: {
 
             FILE* file  = fopen("Chiffrage.txt", "a");
-            printf("Entrez votre texte à chiffrer avec César : ");
+            printf("Entrez votre texte à chiffrer avec César (SANS ESPACES) : ");
             scanf("%s", texte);
             if (!verifierAlphanum(texte)) {
-                printf("Votre texte n'est pas alphanumérique !! CONVERSION DES ACCENTS !!\n");
+                printf("Votre texte n'est pas alphanumérique !! CONVERSION DES ACCENTS !!\n\n");
                 texte = convertirAccent(texte);
                 printf("Maintenant on le chiffre avec l'algorithme de César !\n");
             }
@@ -285,7 +285,7 @@ void afficherMenu() {
         case 2: {
 
             FILE* file  = fopen("Chiffrage.txt", "a");
-            printf("Entrez un texte à déchiffrer avec l'algorithme de césar : \n");
+            printf("Entrez un texte à déchiffrer avec l'algorithme de césar (SANS ESPACES) : \n");
             scanf("%s", texte);
             
             printf("Entrez sa clé de déchiffrement :");
@@ -310,10 +310,10 @@ void afficherMenu() {
         case 3: {
 
             FILE* file  = fopen("Chiffrage.txt", "a");
-            printf("Entrez votre texte à chiffrer avec Vigenère : ");
+            printf("Entrez votre texte à chiffrer avec Vigenère (SANS ESPACES) : ");
             scanf("%s", texte);
             if (!verifierAlphanum(texte)) {
-                printf("Votre texte n'est pas alphanumérique !! CONVERSION DES ACCENTS !!\n");
+                printf("Votre texte n'est pas alphanumérique !! CONVERSION DES ACCENTS !!\n\n");
                 texte = convertirAccent(texte);
                 printf("Maintenant on le chiffre avec l'algorithme de Vigenère !\n");
             }
@@ -341,7 +341,7 @@ void afficherMenu() {
         case 4: {
 
             FILE* file  = fopen("Chiffrage.txt", "a");
-            printf("Entrez un texte à déchiffrer avec l'algorithme de Vigenere : \n");
+            printf("Entrez un texte à déchiffrer avec l'algorithme de Vigenere (SANS ESPACES) : \n");
             scanf("%s", texte);
             char *input_cleV;
             input_cleV = malloc(256);
